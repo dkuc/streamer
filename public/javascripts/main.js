@@ -30,8 +30,6 @@ document.getElementById('fullres').onclick = function () {
 
 document.getElementById('watch').onclick = function () {
     socket.emit('watch request');
-alert('test');
-
 };
 var resolutionSet = false;
 

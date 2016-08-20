@@ -30,12 +30,10 @@ if(document !== null){
 
     document.getElementById('watch').onclick = function () {
         socket.emit('watch request');
+        console.log('watch');
     };
 }
 
-interface Window{
-    streamKey: string;
-}
 var resolutionSet = false;
 
 function setViewerCount(streams : StreamInfo[]){

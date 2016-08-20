@@ -39,3 +39,5 @@ jspm_packages
 public/javascripts/bundle.js
 serverSide/**/*.js
 serverSide/**/*.map
+public/**/*.js
+public/**/*.map

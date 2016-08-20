@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-npm install
+#npm install
 tsc
 browserify public/javascripts/main.js >  public/javascripts/bundle.js

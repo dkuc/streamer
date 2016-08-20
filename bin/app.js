@@ -20,7 +20,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-require('../websocket').init(server);
+require('../serverSide/socketEndpoints/websocket').init(server);
 
 
 /**
@@ -89,6 +89,6 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  require('../socketEndpoints/streamInfo');
-  require('../socketEndpoints/watchRequest');
+  require('../serverSide/socketEndpoints/streamInfo');
+  require('../serverSide/socketEndpoints/watchRequest');
 }

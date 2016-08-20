@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 
 
 var streamIndex = require('./routes/index');
-var streamAlert = require('./routes/streamAlert');
 
 var app = express();
 
@@ -25,7 +24,6 @@ app.use(cookieParser());
 
 app.use('/s/static/',express.static(path.join(__dirname, 'public')));
 app.use('/static/',express.static(path.join(__dirname, 'public')));
-app.use('/s/api/alert', streamAlert);
 app.use('/s/:id', streamIndex);
 app.use('/s', streamIndex);
 

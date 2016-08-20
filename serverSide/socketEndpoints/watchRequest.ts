@@ -1,5 +1,6 @@
-var server = require('../websocket').server();
+import ws = require('./websocket');
 
+const server = ws.getServer();
 
 server.on('connection', function(socket){
     socket.on('watch request', function(msg){

@@ -1,12 +1,13 @@
 var server = require('../websocket').server();
 var statParser= require('../serverSide/streamStatParser');
+var P = require('bluebird');
 
 
 broadcastStreamInfo();
 function broadcastStreamInfo(){
 
 
-    statParser().then(function (streamStats) {
+    P.resolve(statParser()).then(function (streamStats) {
         server.emit('stream', streamStats);
     }).catch(function (err) {
         console.log(err);

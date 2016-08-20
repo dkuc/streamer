@@ -5,6 +5,9 @@
     "strictNullChecks": true,
     "sourceMap": true
   },
+  "filesGlob": [
+    "./serverSide/**/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

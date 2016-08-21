@@ -30,7 +30,6 @@ if(document !== null){
 
     document.getElementById('watch').onclick = function () {
         socket.emit('watch request');
-        console.log('watch');
     };
 }
 

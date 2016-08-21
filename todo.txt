@@ -4,4 +4,3 @@
 -auto generate front and back end JS on build
 
 -eliminate browserify
-

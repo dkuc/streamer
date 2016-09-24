@@ -2,6 +2,7 @@
 import rest = require('rest');
 import io = require('socket.io-client');
 import _ = require('lodash');
+import $ = require("jquery");
 
 var countText = document.getElementById('viewercount');
 var statusText = document.getElementById('status');
@@ -11,10 +12,25 @@ var videoPlayer = videojs('videoPlayer');
 var videoData;
 var socket = io();
 socket.on('stream', setViewerCount);
-socket.on('alert', function (msg) {
-    console.log(msg)
-});
+socket.on('chat', onChatMessage);
+
+function onChatMessage(msg: ChatData) {
+
+    var listbox = $("#messages");
+    var listBoxItems = $("#messages li");
+
+    listbox.append(`<li>${msg.sender}:  ${msg.message}</li>`);
+
+
+    if(listBoxItems.length > 100){
+        listBoxItems.first().remove();
+    }
+
+    listbox.animate({scrollTop: listbox.prop("scrollHeight")}, 500);
+}
 if(document !== null){
+
+
     document.getElementById('halfres').onclick = function () {
         if (videoData) {
             videoPlayer.width(videoData.width / 2).height(videoData.height / 2);
@@ -31,12 +47,24 @@ if(document !== null){
     document.getElementById('watch').onclick = function () {
         socket.emit('watch request');
     };
+
+
+    var textBox = $("#messageInput");
+
+    textBox.keyup(function(event){
+        if(event.keyCode == 13){
+            socket.emit('chat message', textBox.val());
+            textBox.val('')
+        }
+    });
 }
 
 var resolutionSet = false;
 
 function setViewerCount(streams : StreamInfo[]){
     var result = _.find(streams, {name: window['streamKey']});
+    if(!result || !result.viewers)
+        return;
     var viewers = result.viewers;
     countText.textContent = String(viewers);
     videoData = result.videoData;
@@ -68,6 +96,13 @@ interface VideoData {
     height: number
     frameRate: number
     bitRate: number
+}
+
+interface ChatData {
+
+    message: string
+    sender: string
+
 }
 
 

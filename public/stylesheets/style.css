@@ -6,3 +6,28 @@ body {
 a {
   color: #00B7FF;
 }
+
+div{
+  border:1px solid #000;
+  font-family:arial;
+  height:100px;
+  width:200px;
+}
+ul{
+  list-style:none;
+  height:200px;
+  margin:0;
+  overflow:auto;
+  padding:0;
+  text-indent:10px;
+  border: 1px solid black
+}
+li{
+  line-height:25px;
+}
+li:nth-child(even){
+  background:#ccc;
+}
+input{
+  min-width: 400px;
+}

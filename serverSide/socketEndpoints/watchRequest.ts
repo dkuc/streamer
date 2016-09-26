@@ -4,6 +4,9 @@ const server = ws.getServer();
 
 server.on('connection', function(socket){
     console.log('connection event');
+    console.log(JSON.stringify(socket.handshake.address));
+    console.log('---------------------');
+    console.log(JSON.stringify(socket.request));
     socket.on('watch request', function(msg){
         server.emit("alert", socket.handshake.address);
     });

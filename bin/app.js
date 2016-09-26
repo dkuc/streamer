@@ -91,4 +91,5 @@ function onListening() {
   debug('Listening on ' + bind);
   require('../serverSide/socketEndpoints/streamInfo');
   require('../serverSide/socketEndpoints/watchRequest');
+  require('../serverSide/socketEndpoints/chat');
 }

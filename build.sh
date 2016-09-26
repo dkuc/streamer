@@ -2,4 +2,4 @@
 #rm -rf node_modules/
 #npm install
 tsc
-browserify public/javascripts/main.js >  public/javascripts/bundle.js
+#browserify public/javascripts/main.js >  public/javascripts/bundle.js

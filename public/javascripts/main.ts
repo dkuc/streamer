@@ -13,6 +13,10 @@ var videoData;
 var socket = io();
 socket.on('stream', setViewerCount);
 socket.on('chat', onChatMessage);
+socket.on('name', onNewName);
+function onNewName(name) {
+    $('#username').text(name);
+}
 
 function onChatMessage(msg: ChatData) {
 
@@ -55,6 +59,24 @@ if(document !== null){
         if(event.keyCode == 13){
             socket.emit('chat message', textBox.val());
             textBox.val('')
+        }
+    });
+
+    $("#setname").click(function(){
+        promptPromise('What is your name?')
+            .then(function(name) {
+                socket.emit('setname',name)
+            });
+
+    });
+}
+function promptPromise(message) {
+    return new Promise(function(resolve, reject) {
+        var result = window.prompt(message);
+        if (result != null) {
+            resolve(result);
+        } else {
+            reject();
         }
     });
 }

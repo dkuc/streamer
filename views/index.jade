@@ -1,29 +1,47 @@
 extends layout
 
 block content
-  video#videoPlayer(class="video-js" controls autoplay  preload="none" width="720" height="540" data-setup="{}")
-    source(src=videoSource, type='rtmp/mp4')
-  p Stream:
-    span#status
-    span
-    a(href="test/") Speed Test
-    if (streamKey == 'rack')
-      span -
-      a(href="https://www.twitch.tv/rackshack") Twitch
-  p Viewers:
-    span#viewercount
-  button#halfres Half Resolution
-  button#fullres Native Resolution
-  if (streamKey == 'rack')
-    button#watch Tell Dan to Start Streaming
-  p
-    button#setname Set Name
-    span   Name:
-    span#username
-    ul#messages
-      li Welcome To Dan Chat
+  div(class="container")
+    div(class="row")
+      div(class="center-block" style="width:720px" )
+        div(class="row")
+          video#videoPlayer(class="video-js" controls autoplay  preload="none" width="720" height="540" data-setup="{}")
+            source(src=videoSource, type='rtmp/mp4')
+          div(class="row center-block")
 
-    input(id="messageInput" autocomplete="off")
+            span Stream:
+            span#status
+
+            a(href="test/") Speed Test
+            if (streamKey == 'rack')
+                span -
+                a(href="https://www.twitch.tv/rackshack") Twitch
+            span Viewers:
+              span#viewercount
+    div(class="row")
+      div(class="col-md-8 col-md-offset-2")
+        div(class="row")
+          div(class="col-md-4")
+            button(class="btn btn-primary btn-sm")#halfres Half Resolution
+          div(class="col-md-4")
+            button(class="btn btn-primary btn-sm")#fullres Native Resolution
+          if (streamKey == 'rack')
+            div(class="col-md-4")
+             button(class="btn btn-primary btn-sm")#watch Tell Dan to Start Streaming
+    div(class="row")
+      div(class="col-md-12")
+        button(class="btn btn-primary btn-sm")#setname Set Name
+        span   Name:
+        span#username
+    div(class="row")
+      div(class="col-md-8")
+        ul#messages
+          li Welcome To Dan Chat
+        input(id="messageInput" autocomplete="off")
+      div(class="col-md-4")
+        ul#users
+
+
   script.
     window.streamKey = "#{streamKey}";
   script(src='https://vjs.zencdn.net/5.6.0/video.js')

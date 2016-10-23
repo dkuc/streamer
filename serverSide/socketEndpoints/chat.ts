@@ -92,7 +92,7 @@ function initStoredNames() {
 async function writeStoredNames() {
 
     while(true) {
-        await P.delay(1000 * 2);
+        await P.delay(1000 * 60);
 
         if(_.isEqual(storedNames, copyOfStoredNames) === false){
             fs.writeFileSync(filename,JSON.stringify(storedNames));

@@ -53,7 +53,7 @@ server.on('connection', function(userSocket){
         const users  =_.map(sockets, 'chatName');
 
         for (var socket of sockets) {
-            if (isLocal(userSocket))
+            if (isLocal(socket))
                 socket.emit('users', usersWithIps);
             else
                 socket.emit('users', users);

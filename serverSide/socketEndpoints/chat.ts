@@ -45,12 +45,27 @@ server.on('connection', function(userSocket){
 
 
     function emitUsers() {
-        server.emit('users', _.map(sockets, function (socket) {
-            if(userSocket.realConnection.contains('192.168.'))
-                return `${socket.chatName} (${socket.realConnection})`
-            return socket.chatName;
-        }));
+
+        const usersWithIps  =_.map(sockets, function (socket) {
+            return `${socket.chatName} (${socket.realConnection})`;
+        });
+
+        const users  =_.map(sockets, 'chatName');
+
+        for (var socket of sockets) {
+            if (isLocal(userSocket))
+                socket.emit('users', usersWithIps);
+            else
+                socket.emit('users', users);
+        }
+
     }
 });
+
+function isLocal(socket) {
+    return socket.realConnection.includes('192.168.') ||
+        socket.realConnection.includes('::1');
+}
+
 
 

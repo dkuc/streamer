@@ -41,3 +41,4 @@ serverSide/**/*.js
 serverSide/**/*.map
 public/**/*.js
 public/**/*.map
+names.json

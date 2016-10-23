@@ -1,9 +1,19 @@
 import ws = require('./websocket');
 import _ = require('lodash');
+import fs = require('fs');
+import P = require('bluebird');
 
+
+const filename = 'names.json';
 const server = ws.getServer();
-const storedNames = {'192.168.1.65': 'Dan'};
+let copyOfStoredNames = {};
+let storedNames = {'192.168.1.65': 'Dan'};
 const sockets = [];
+
+
+initStoredNames();
+writeStoredNames();
+
 
 server.on('connection', function (userSocket) {
     userSocket.on('chat message', onChatMessage);
@@ -70,10 +80,36 @@ function emitUsers() {
 
 }
 
+function initStoredNames() {
+
+    if(fs.existsSync(filename)){
+        const data = fs.readFileSync(filename,'utf8');
+        storedNames = JSON.parse(data);
+        copyOfStoredNames = _.cloneDeep(storedNames);
+    }
+}
+
+async function writeStoredNames() {
+
+    while(true) {
+        await P.delay(1000 * 2);
+
+        if(_.isEqual(storedNames, copyOfStoredNames) === false){
+            fs.writeFileSync(filename,JSON.stringify(storedNames));
+
+            console.log('successfull write');
+
+            copyOfStoredNames = _.cloneDeep(storedNames);
+        }
+    }
+}
+
 function isLocal(socket) {
     return socket.realConnection.includes('192.168.') ||
         socket.realConnection.includes('::1');
 }
+
+
 
 
 

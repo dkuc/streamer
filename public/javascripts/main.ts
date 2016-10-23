@@ -14,6 +14,7 @@ var socket = io();
 socket.on('stream', setViewerCount);
 socket.on('chat', onChatMessage);
 socket.on('name', onNewName);
+socket.on('users', onUsers);
 function onNewName(name) {
     $('#username').text(name);
 }
@@ -31,6 +32,17 @@ function onChatMessage(msg: ChatData) {
     }
 
     listbox.animate({scrollTop: listbox.prop("scrollHeight")}, 500);
+}
+function onUsers(users: string[]) {
+
+    var listbox = $("#users");
+
+    listbox.empty();
+
+    users.forEach((user)=>{
+        listbox.append(`<li>${user}</li>`);
+    });
+
 }
 if(document !== null){
 

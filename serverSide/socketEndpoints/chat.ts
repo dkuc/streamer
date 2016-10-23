@@ -6,34 +6,51 @@ const storedNames = {'::1': 'Rack'};
 const sockets = [];
 
 //ToDo: Stop duplicate names, name length limits
-server.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-        server.emit("chat", {message:msg, sender:socket.chatName});
+server.on('connection', function(userSocket){
+    userSocket.on('chat message', function(msg){
+        server.emit("chat", {message:msg, sender:userSocket.chatName});
     });
 
-    socket.on('disconnect', function(){
-       console.log('removing: ' +socket.realConnection);
-        _.remove(sockets, socket);
-    });
-
-    socket.on('setname', function(name){
-        socket.chatName = name
-
-        storedNames[socket.realConnection] = name
-
-        socket.emit('name', name);
-
+    userSocket.on('disconnect', function(){
+       console.log('removing: ' +userSocket.realConnection);
+        _.remove(sockets, userSocket);
+        emitUsers();
     });
 
 
-    socket.chatName = socket.id.substr(2,5);
-    var storedName = storedNames[socket.realConnection];
+
+    userSocket.on('setname', function(name){
+        userSocket.chatName = name;
+
+        storedNames[userSocket.realConnection] = name;
+
+        userSocket.emit('name', name);
+        emitUsers();
+
+    });
+
+
+    userSocket.chatName = userSocket.id.substr(2,5);
+    var storedName = storedNames[userSocket.realConnection];
     if(storedName) {
-        socket.chatName = storedName;
+        userSocket.chatName = storedName;
     }
-    sockets.push(socket);
+    storedNames[userSocket.realConnection] = userSocket.chatName;
+    sockets.push(userSocket);
 
-    socket.emit('name', socket.chatName);
+    userSocket.emit('name', userSocket.chatName);
 
 
+    emitUsers();
+
+
+    function emitUsers() {
+        server.emit('users', _.map(sockets, function (socket) {
+            if(userSocket.realConnection.contains('192.168.'))
+                return `${socket.chatName} (${socket.realConnection})`
+            return socket.chatName;
+        }));
+    }
 });
+
+

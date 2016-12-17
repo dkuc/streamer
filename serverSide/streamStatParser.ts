@@ -32,7 +32,7 @@ async function statParser() : Promise<StreamInfo[]> {
         clients.forEach(function (client) {
             if (client.publishing)
                 online = true;
-            else
+            else if(!client.address["0"].includes('twitch'))
                 clientCount++;
         });
 

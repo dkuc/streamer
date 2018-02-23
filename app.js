@@ -31,6 +31,7 @@ app.use('/s/js', express.static(__dirname + '/node_modules/jquery/dist'));
 
 app.use('/s/:id', streamIndex);
 app.use('/s', streamIndex);
+app.use('/w', require('./routes/temp'));
 
 
 
@@ -65,6 +66,26 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
+const NodeMediaServer = require('node-media-server');
+
+const config = {
+    rtmp: {
+        port: 1934,
+        chunk_size: 30000,
+        gop_cache: true,
+        ping: 60,
+        ping_timeout: 30
+    },
+    http: {
+        port: 8000,
+        allow_origin: '*'
+    }
+};
+
+var nms = new NodeMediaServer(config);
+nms.run();
 
 
 module.exports = app;

@@ -7,7 +7,15 @@ import $ = require("jquery");
 var countText = document.getElementById('viewercount');
 var statusText = document.getElementById('status');
 //var videoPlayer = document.getElementById('videoPlayer');
-var videoPlayer = videojs('videoPlayer');
+var videoPlayer = videojs('videoPlayer', {
+    autoplay: true,
+    html5: {
+        flvjsConfig: {
+            isLive: true,
+            enableStashBuffer: false
+        }
+    }
+});
 
 var videoData;
 var socket = io();
@@ -49,20 +57,22 @@ if(document !== null){
 
     document.getElementById('halfres').onclick = function () {
         if (videoData) {
-            videoPlayer.width(videoData.width / 2).height(videoData.height / 2);
+            videoPlayer.width(videoData.width / 2);
+            videoPlayer.height(videoData.height / 2);
         }
     };
 
     document.getElementById('fullres').onclick = function () {
         if (videoData) {
-            videoPlayer.width(videoData.width).height(videoData.height);
+            videoPlayer.width(videoData.width);
+            videoPlayer.height(videoData.height);
         }
 
     };
 
-    document.getElementById('watch').onclick = function () {
-        socket.emit('watch request');
-    };
+    // document.getElementById('watch').onclick = function () {
+    //     socket.emit('watch request');
+    // };
 
 
     var textBox = $("#messageInput");
@@ -97,22 +107,24 @@ var resolutionSet = false;
 
 function setViewerCount(streams : StreamInfo[]){
     var result = _.find(streams, {name: window['streamKey']});
-    if(!result || !result.viewers)
+    if(!result){
+        statusText.textContent = "Offline";
         return;
+    }
+
     var viewers = result.viewers;
     countText.textContent = String(viewers);
     videoData = result.videoData;
-    if (result.online) {
-        statusText.textContent = "Online " + videoData.width + "x" + videoData.height + " @ " + videoData.frameRate + "fps - " + videoData.bitRate.toFixed(2) + " Mbps";
-        if(resolutionSet === false){
-            if((<any>videoPlayer).isReady_){ //GET RID OF THIS ANY
-                videoPlayer.width(videoData.width / 2).height(videoData.height / 2);
-                resolutionSet = true;
-            }
+
+    statusText.textContent = "Online " + videoData.width + "x" + videoData.height + " @ " + videoData.frameRate + "fps - " + videoData.bitRate.toFixed(2) + " Mbps";
+    if (resolutionSet === false) {
+        if ((<any>videoPlayer).isReady_) { //GET RID OF THIS ANY
+            videoPlayer.width(videoData.width / 2);
+            videoPlayer.height(videoData.height / 2);
+            resolutionSet = true;
         }
     }
-    else
-        statusText.textContent = "Offline";
+
 }
 
 interface StreamInfo {

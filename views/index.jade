@@ -6,13 +6,13 @@ block content
       div(class="center-block" style="width:720px" )
         div(class="row")
           video#videoPlayer(class="video-js" controls autoplay  preload="none" width="720" height="540" data-setup="{}")
-            source(src=videoSource, type='rtmp/mp4')
+            source(src=videoSource, type='video/flv')
           div(class="row center-block")
 
             span Stream:
             span#status
 
-            if (streamKey == 'rack')
+            //if (streamKey == 'rack')
                 a(href="https://www.twitch.tv/rackshack") Twitch Stream
             span Viewers:
               span#viewercount
@@ -23,7 +23,7 @@ block content
             button(class="btn btn-primary btn-sm")#halfres Half Resolution
           div(class="col-md-4")
             button(class="btn btn-primary btn-sm")#fullres Native Resolution
-          if (streamKey == 'rack')
+         //if (streamKey == 'rack')
             div(class="col-md-4")
              button(class="btn btn-primary btn-sm")#watch Tell Dan to Start Streaming
     div(class="row")
@@ -42,7 +42,9 @@ block content
 
   script.
     window.streamKey = "#{streamKey}";
-  script(src='https://vjs.zencdn.net/5.6.0/video.js')
+  script(src='https://vjs.zencdn.net/6.6.3/video.js')
+  script(src='/s/js/flv.min.js')
+  script(src='/s/js/videojs-flvjs.min.js')
   script(src='static/javascripts/bundle.js')
 
 

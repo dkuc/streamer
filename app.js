@@ -28,10 +28,11 @@ app.use('/static/',express.static(path.join(__dirname, 'public')));
 app.use('/s/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/s/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/s/js', express.static(__dirname + '/node_modules/jquery/dist'));
+app.use('/s/js', express.static(__dirname + '/node_modules/videojs-flvjs/dist'));
+app.use('/s/js', express.static(__dirname + '/node_modules/flv.js/dist'));
 
 app.use('/s/:id', streamIndex);
 app.use('/s', streamIndex);
-app.use('/w', require('./routes/temp'));
 
 
 
@@ -72,7 +73,7 @@ const NodeMediaServer = require('node-media-server');
 
 const config = {
     rtmp: {
-        port: 1934,
+        port: 1935,
         chunk_size: 30000,
         gop_cache: true,
         ping: 60,

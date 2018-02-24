@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   if(pathTokens.length === 3){
     streamKey = pathTokens[2];
   }
-  var videoSource = "rtmp://dankuc.com/live/" + streamKey;
+  var videoSource = "ws://shadowclip.net:8000/live/" + streamKey + ".flv";
 
   res.render('index', { title: streamKey + ' Stream', videoSource: videoSource, streamKey: streamKey });
 });

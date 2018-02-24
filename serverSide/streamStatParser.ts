@@ -17,22 +17,26 @@ async function statParser(): Promise<StreamInfo[]> {
 
 
     for(const stream  of _.values(statsJs.live)) {
-        const streamName = stream.publisher.stream;
+        const publisher = stream.publisher;
+        if(!publisher){
+            return;
+        }
+        const streamName = publisher.stream;
         const clientCount = stream.subscribers.length;
         const streamInfo: StreamInfo = {
             viewers: clientCount,
             name: streamName,
             videoData: {
-                width: stream.publisher.video.width,
-                height: stream.publisher.video.height,
-                frameRate: stream.publisher.video.fps,
+                width: publisher.video.width,
+                height: publisher.video.height,
+                frameRate: publisher.video.fps,
                 bitRate: 0
             }
         };
 
 
 
-        const bytes = stream.publisher.bytes;
+        const bytes = publisher.bytes;
         const time = new Date().getTime();
         let megaBitsPerSecond = 0;
 

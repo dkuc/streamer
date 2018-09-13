@@ -35,8 +35,16 @@ server.on('connection', function (userSocket) {
     emitUsers();
 
 
+    function escapeHTML(s) {
+        return s.replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
     function onChatMessage(msg) {
-        server.emit("chat", {message: msg, sender: userSocket.chatName});
+        const escaped = escapeHTML(msg);
+        server.emit("chat", {message: escaped, sender: userSocket.chatName});
     }
 
     function onDisconnect() {
@@ -50,6 +58,9 @@ server.on('connection', function (userSocket) {
             return;
 
         if (_.some(sockets, (socket) => socket.chatName === name))
+            return;
+
+        if(escapeHTML(name) !== name)
             return;
 
         userSocket.chatName = name;
@@ -105,7 +116,7 @@ async function writeStoredNames() {
 }
 
 function isLocal(socket) {
-    return socket.realConnection.includes('192.168.') ||
+    return socket.realConnection.includes('172.34') ||
         socket.realConnection.includes('::1');
 }
 

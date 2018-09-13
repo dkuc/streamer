@@ -1,5 +1,4 @@
 /// <reference path="../../node_modules/@types/videojs/index.d.ts" />
-import rest = require('rest');
 import io = require('socket.io-client');
 import _ = require('lodash');
 import $ = require("jquery");
@@ -106,7 +105,7 @@ function promptPromise(message) {
 var resolutionSet = false;
 
 function setViewerCount(streams : StreamInfo[]){
-    var result = _.find(streams, {name: window['streamKey']});
+    var result = <StreamInfo> _.find(streams, {name: window['streamKey']});
     if(!result){
         statusText.textContent = "Offline";
         return;
